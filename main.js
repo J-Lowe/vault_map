@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	for(i = 0; i < size; i++) {
 		document.getElementById("map-table").innerHTML += "<tr id='row" + i + "'></tr>";
 		for(j = 0; j < size; j++) {
-			document.getElementById("row" + i).innerHTML += "<td id='cell-" + i + "-" + j + "'" + ((i == startV && j == startH) ? "style='background-color: yellow'" : "") +">" + ((i == startV && j == startH) ? "S*" : "") +"</td>";
+			document.getElementById("row" + i).innerHTML += "<td id='cell-" + i + "-" + j + "'" + ((i == startV && j == startH) ? "style='background-color: yellow'" : "") +">" + ((i == startV && j == startH) ? "P*" : "") +"</td>";
 		}
 	}
   });
