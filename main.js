@@ -13,7 +13,11 @@ var waypoints = [];
 
 const directions = {NORTH: "N", SOUTH: "S", EAST: "E", WEST: "W"};
 
-document.addEventListener("DOMContentLoaded", function() {
+var hasMoved = false;
+
+function drawMap(rad) {
+	startH = startV = row = col = vaultRadius = rad;
+	document.getElementById("size-buttons").setAttribute("hidden", "true");
 	size = vaultRadius * 2 + 1;
 	for(i = 0; i < size; i++) {
 		document.getElementById("map-table").innerHTML += "<tr id='row" + i + "'></tr>";
@@ -21,33 +25,75 @@ document.addEventListener("DOMContentLoaded", function() {
 			document.getElementById("row" + i).innerHTML += "<td id='cell-" + i + "-" + j + "'" + ((i == startV && j == startH) ? "style='background-color: yellow'" : "") +">" + ((i == startV && j == startH) ? "P*" : "") +"</td>";
 		}
 	}
-  });
+};
 
 function move(direction) {
 	var curLoc = document.getElementById("cell-" + row + "-" + col);
-	curLoc.style.backgroundColor = "grey";
-	curLoc.innerText = curLoc.innerText.slice(0, -1);
+	var updateLoc = false;
 	switch(direction) {
 		case directions.NORTH:
-			vertical++;
-			row--;
+			if (row != 0) {
+				curLoc.style.backgroundColor = "grey";
+				curLoc.innerText = curLoc.innerText.slice(0, -1);
+				vertical++;
+				row--;
+				if (!hasMoved) {
+					curLoc.style.borderLeft = "3px solid";
+					curLoc.style.borderRight = "3px solid";
+					curLoc.style.borderBottom = "3px solid";
+				}
+				updateLoc = true;
+			}
 			break;
 		case directions.SOUTH:
-			vertical--;
-			row++;
+			if (row != vaultRadius * 2) {
+				curLoc.style.backgroundColor = "grey";
+				curLoc.innerText = curLoc.innerText.slice(0, -1);
+				vertical--;
+				row++;
+				if (!hasMoved) {
+					curLoc.style.borderLeft = "3px solid";
+					curLoc.style.borderRight = "3px solid";
+					curLoc.style.borderTop = "3px solid";
+				}
+				updateLoc = true;
+			}
 			break;
 		case directions.EAST:
-			horizontal++;
-			col++;
+			if (col != vaultRadius * 2) {
+				curLoc.style.backgroundColor = "grey";
+				curLoc.innerText = curLoc.innerText.slice(0, -1);
+				horizontal++;
+				col++;
+				if (!hasMoved) {
+					curLoc.style.borderLeft = "3px solid";
+					curLoc.style.borderTop = "3px solid";
+					curLoc.style.borderBottom = "3px solid";
+				}
+				updateLoc = true;
+			}
 			break;
 		case directions.WEST:
-			horizontal--;
-			col--;
+			if (col != 0) {
+				curLoc.style.backgroundColor = "grey";
+				curLoc.innerText = curLoc.innerText.slice(0, -1);
+				horizontal--;
+				col--;
+				if (!hasMoved) {
+					curLoc.style.borderTop = "3px solid";
+					curLoc.style.borderRight = "3px solid";
+					curLoc.style.borderBottom = "3px solid";
+				}
+				updateLoc = true;
+			}
 			break;
 		default:
 			break;
 	}
-	updateLocation();
+	hasMoved = true;
+	if (updateLoc) {
+		updateLocation();
+	}
 }
 
 function saveLocation(t) {
